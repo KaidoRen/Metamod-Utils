@@ -31,7 +31,8 @@
 *	version.
 */
 
-#include "precompiled.h"
+#include "amxxmodule.h"
+#include "CMenu.h"
 
 CMenuManager		gl_MenuManager;
 MenuPlayerStruct	gl_PlayerMenu[MAX_CLIENTS + 1];

@@ -125,10 +125,10 @@ public:
 	bool	menu_open(edict_t *edict);
 	void	menu_settitle(const char *title, ...);
 
+	int		menu_additem(char *alias, const char * name, ...);
+	int		menu_additem(int alias, const char * name, ...);
 	int		menu_additem(char * alias, MCALLBACK callback, const char * name, ...);
 	int		menu_additem(int alias, MCALLBACK callback, const char * name, ...);
-	int		menu_additem(char * alias, const char * name, ...);
-	int		menu_additem(int alias, const char * name, ...);
 
 	int		menu_getitems();
 

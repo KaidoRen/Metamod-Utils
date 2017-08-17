@@ -31,8 +31,7 @@
 *	version.
 */
 
-#include "amxxmodule.h"
-#include "CMenu.h"
+#include "precompiled.h"
 
 CMenuManager		gl_MenuManager;
 MenuPlayerStruct	gl_PlayerMenu[MAX_CLIENTS + 1];
@@ -223,7 +222,7 @@ void CMenu::menu_destroy() {
 	if (gl_vecMenus.empty())
 		return;
 
-	auto it = gl_vecMenus.begin(); 
+	auto it = gl_vecMenus.begin();
 
 	while (it != gl_vecMenus.end()) {
 		auto menu = *it;
@@ -248,6 +247,44 @@ void CMenu::menu_settitle(const char * title, ...) {
 	va_end(argptr);
 
 	m_sTitle = buffer;
+}
+
+int CMenu::menu_additem(char *alias, const char * name, ...) {
+	va_list argptr;
+	char buffer[128];
+
+	va_start(argptr, name);
+	vsprintf(buffer, name, argptr);
+	va_end(argptr);
+
+	auto pMenuItem = new MenuItemsStruct;
+
+	strcpy(pMenuItem->itemname, buffer);
+	pMenuItem->itemalias_c = alias;
+	pMenuItem->callback = nullptr;
+	pMenuItem->itemid = m_vecItems.size();
+
+	m_vecItems.push_back(pMenuItem);
+	return pMenuItem->itemid;
+}
+
+int CMenu::menu_additem(int alias, const char * name, ...) {
+	va_list argptr;
+	char buffer[128];
+
+	va_start(argptr, name);
+	vsprintf(buffer, name, argptr);
+	va_end(argptr);
+
+	auto pMenuItem = new MenuItemsStruct;
+
+	strcpy(pMenuItem->itemname, buffer);
+	pMenuItem->itemalias_i = alias;
+	pMenuItem->callback = nullptr;
+	pMenuItem->itemid = m_vecItems.size();
+
+	m_vecItems.push_back(pMenuItem);
+	return pMenuItem->itemid;
 }
 
 int CMenu::menu_additem(char * alias, MCALLBACK callback, const char * name, ...) {
@@ -282,44 +319,6 @@ int CMenu::menu_additem(int alias, MCALLBACK callback, const char * name, ...) {
 	strcpy(pMenuItem->itemname, buffer);
 	pMenuItem->itemalias_i = alias;
 	pMenuItem->callback = callback;
-	pMenuItem->itemid = m_vecItems.size();
-
-	m_vecItems.push_back(pMenuItem);
-	return pMenuItem->itemid;
-}
-
-int CMenu::menu_additem(char * alias, const char * name, ...) {
-	va_list argptr;
-	char buffer[128];
-
-	va_start(argptr, name);
-	vsprintf(buffer, name, argptr);
-	va_end(argptr);
-
-	auto pMenuItem = new MenuItemsStruct;
-
-	strcpy(pMenuItem->itemname, buffer);
-	pMenuItem->itemalias_c = alias;
-	pMenuItem->callback = nullptr;
-	pMenuItem->itemid = m_vecItems.size();
-
-	m_vecItems.push_back(pMenuItem);
-	return pMenuItem->itemid;
-}
-
-int CMenu::menu_additem(int alias, const char * name, ...) {
-	va_list argptr;
-	char buffer[128];
-
-	va_start(argptr, name);
-	vsprintf(buffer, name, argptr);
-	va_end(argptr);
-
-	auto pMenuItem = new MenuItemsStruct;
-
-	strcpy(pMenuItem->itemname, buffer);
-	pMenuItem->itemalias_i = alias;
-	pMenuItem->callback = nullptr;
 	pMenuItem->itemid = m_vecItems.size();
 
 	m_vecItems.push_back(pMenuItem);
